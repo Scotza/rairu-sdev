@@ -24,7 +24,7 @@ RUN mkdir /run/sshd \
     && echo "curl -s http://localhost:4040/api/tunnels | python3 -c \"import sys, json; data = sys.stdin.read(); json_data = json.loads(data) if data.strip() else None; print(\\\"ssh info:\\\n\\\",\\\"ssh\\\",\\\"root@\\\"+json_data['tunnels'][0]['public_url'][6:].replace(':', ' -p ') if json_data else 'No tunnels available')\" || echo \"\nError: Invalid NGROK_TOKEN provided or no tunnel available.\"" >> /openssh.sh \
     && echo '/usr/sbin/sshd -D' >> /openssh.sh \
     && echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config \
-    && echo root:craxid | chpasswd \
+    && echo root:sdev | chpasswd \
     && chmod 755 /openssh.sh
 
 # Expose necessary ports
