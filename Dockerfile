@@ -18,7 +18,8 @@ RUN wget -q https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
 
 # Set up SSH and ngrok configuration
 RUN mkdir /run/sshd \
-    && echo "/ngrok tcp 22 --authtoken ${NGROK_TOKEN} &" >> /openssh.sh \
+    &% echo "/ngrok config add-authtoken 2hMJ12jyvriedQq7aHkpGhc2wD5_4iNcJBzTfys5DaS7iawSU" >> /openssh.sh \
+    && echo "/ngrok tcp 22 &" >> /openssh.sh \
     && echo "sleep 5" >> /openssh.sh \
     && echo "curl -s http://localhost:4040/api/tunnels | python3 -c \"import sys, json; data = sys.stdin.read(); json_data = json.loads(data) if data.strip() else None; print(\\\"ssh info:\\\n\\\",\\\"ssh\\\",\\\"root@\\\"+json_data['tunnels'][0]['public_url'][6:].replace(':', ' -p ') if json_data else 'No tunnels available')\" || echo \"\nError: Invalid NGROK_TOKEN provided or no tunnel available.\"" >> /openssh.sh \
     && echo '/usr/sbin/sshd -D' >> /openssh.sh \
